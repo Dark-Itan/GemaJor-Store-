@@ -1,0 +1,449 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "GemaJor Store API - Customers",
+    "version": "1.0.0",
+    "description": "API REST para la gestion de clientes de GemaJor Store. Contrato disenado bajo enfoque API-first."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3001/api/v1",
+      "description": "Servidor de desarrollo local"
+    }
+  ],
+  "paths": {
+    "/customers": {
+      "get": {
+        "summary": "Listar clientes",
+        "description": "Retorna una lista paginada de clientes registrados. Soporta busqueda por texto en nombre y email. Solo accesible para administradores.",
+        "tags": ["Customers"],
+        "security": [
+          {
+            "bearerAuth": ["admin"]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Numero de pagina",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Cantidad de registros por pagina (maximo 100)",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10,
+              "minimum": 1,
+              "maximum": 100
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Busqueda por coincidencia en firstName, lastName o email",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista paginada de clientes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerList"
+                },
+                "example": {
+                  "data": [
+                    {
+                      "id": "c7d2a1b4-8e9f-4a3c-b6d5-1e2f3a4b5c6d",
+                      "firstName": "Geovany",
+                      "lastName": "Lopez",
+                      "email": "geovany@example.com",
+                      "phone": "+52 961 123 4567",
+                      "createdAt": "2026-05-28T10:30:00Z"
+                    }
+                  ],
+                  "meta": {
+                    "page": 1,
+                    "limit": 10,
+                    "total": 1,
+                    "totalPages": 1
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
+        }
+      },
+      "post": {
+        "summary": "Crear cliente",
+        "description": "Registra un nuevo cliente en la tienda. El endpoint es publico. Valida que el email no este duplicado y que tenga formato valido.",
+        "tags": ["Customers"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomerCreate"
+              },
+              "example": {
+                "firstName": "Geovany",
+                "lastName": "Lopez",
+                "email": "geovany@example.com",
+                "password": "securePass123",
+                "phone": "+52 961 123 4567"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Cliente creado exitosamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Customer"
+                },
+                "example": {
+                  "id": "c7d2a1b4-8e9f-4a3c-b6d5-1e2f3a4b5c6d",
+                  "firstName": "Geovany",
+                  "lastName": "Lopez",
+                  "email": "geovany@example.com",
+                  "phone": "+52 961 123 4567",
+                  "createdAt": "2026-05-28T10:30:00Z"
+                }
+              }
+            }
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          }
+        }
+      }
+    },
+    "/customers/{id}": {
+      "get": {
+        "summary": "Obtener detalle de cliente",
+        "description": "Retorna la informacion completa de un cliente especifico. Un cliente solo puede ver su propio perfil; un administrador puede ver cualquier perfil.",
+        "tags": ["Customers"],
+        "security": [
+          {
+            "bearerAuth": ["customer", "admin"]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "UUID del cliente",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalle del cliente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Customer"
+                },
+                "example": {
+                  "id": "c7d2a1b4-8e9f-4a3c-b6d5-1e2f3a4b5c6d",
+                  "firstName": "Geovany",
+                  "lastName": "Lopez",
+                  "email": "geovany@example.com",
+                  "phone": "+52 961 123 4567",
+                  "createdAt": "2026-05-28T10:30:00Z"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "Customer": {
+        "type": "object",
+        "required": ["id", "firstName", "lastName", "email", "createdAt"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Identificador unico del cliente"
+          },
+          "firstName": {
+            "type": "string",
+            "description": "Nombre del cliente",
+            "example": "Geovany"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "Apellido del cliente",
+            "example": "Lopez"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "Correo electronico unico",
+            "example": "geovany@example.com"
+          },
+          "phone": {
+            "type": "string",
+            "description": "Numero de telefono de contacto",
+            "example": "+52 961 123 4567"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Fecha de registro del cliente"
+          }
+        }
+      },
+      "CustomerCreate": {
+        "type": "object",
+        "required": ["firstName", "lastName", "email", "password"],
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "description": "Nombre del cliente",
+            "example": "Geovany"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "Apellido del cliente",
+            "example": "Lopez"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "Correo electronico unico",
+            "example": "geovany@example.com"
+          },
+          "password": {
+            "type": "string",
+            "format": "password",
+            "description": "Contrasena de acceso",
+            "minLength": 8,
+            "example": "securePass123"
+          },
+          "phone": {
+            "type": "string",
+            "description": "Numero de telefono de contacto (opcional)",
+            "example": "+52 961 123 4567"
+          }
+        }
+      },
+      "CustomerList": {
+        "type": "object",
+        "required": ["data", "meta"],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Customer"
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/PaginationMeta"
+          }
+        }
+      },
+      "PaginationMeta": {
+        "type": "object",
+        "required": ["page", "limit", "total", "totalPages"],
+        "properties": {
+          "page": {
+            "type": "integer",
+            "description": "Pagina actual"
+          },
+          "limit": {
+            "type": "integer",
+            "description": "Registros por pagina"
+          },
+          "total": {
+            "type": "integer",
+            "description": "Total de registros"
+          },
+          "totalPages": {
+            "type": "integer",
+            "description": "Total de paginas"
+          }
+        }
+      },
+      "ApiError": {
+        "type": "object",
+        "required": ["code", "message", "details"],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Codigo de error estable para manejo programatico",
+            "example": "CUSTOMER_NOT_FOUND"
+          },
+          "message": {
+            "type": "string",
+            "description": "Mensaje legible para el usuario final",
+            "example": "No encontramos a este cliente. Puede que haya sido eliminado o el enlace este equivocado."
+          },
+          "details": {
+            "type": "object",
+            "description": "Informacion adicional del error"
+          }
+        }
+      }
+    },
+    "responses": {
+      "NotFound": {
+        "description": "Recurso no encontrado",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ApiError"
+            },
+            "example": {
+              "code": "CUSTOMER_NOT_FOUND",
+              "message": "No encontramos a este cliente. Puede que haya sido eliminado o el enlace este equivocado.",
+              "details": {
+                "id": "c7d2a1b4-8e9f-4a3c-b6d5-1e2f3a4b5c6d"
+              }
+            }
+          }
+        }
+      },
+      "Conflict": {
+        "description": "Conflicto con el estado actual del recurso",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ApiError"
+            },
+            "example": {
+              "code": "EMAIL_ALREADY_EXISTS",
+              "message": "Este correo ya tiene una cuenta. Quieres iniciar sesion o recuperar tu contrasena?",
+              "details": {
+                "email": "geovany@example.com"
+              }
+            }
+          }
+        }
+      },
+      "UnprocessableEntity": {
+        "description": "Validacion de negocio fallida",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ApiError"
+            },
+            "example": {
+              "code": "INVALID_EMAIL_FORMAT",
+              "message": "El correo que ingresaste no tiene un formato valido. Revisa que este completo, por ejemplo: nombre@correo.com",
+              "details": {
+                "email": "geovanyexample.com"
+              }
+            }
+          }
+        }
+      },
+      "Forbidden": {
+        "description": "Acceso denegado",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ApiError"
+            },
+            "example": {
+              "code": "FORBIDDEN_ACCESS",
+              "message": "No tienes permiso para ver esta informacion. Si crees que es un error, contacta al administrador.",
+              "details": {
+                "requestedId": "c7d2a1b4-8e9f-4a3c-b6d5-1e2f3a4b5c6d"
+              }
+            }
+          }
+        }
+      },
+      "BadRequest": {
+        "description": "Parametros de consulta invalidos",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ApiError"
+            },
+            "example": {
+              "code": "INVALID_PAGINATION",
+              "message": "Los filtros de busqueda no son validos. Revisa la pagina y el limite de resultados.",
+              "details": {
+                "limit": 150
+              }
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "No autenticado",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ApiError"
+            },
+            "example": {
+              "code": "UNAUTHORIZED",
+              "message": "Necesitas iniciar sesion para realizar esta accion. Tu sesion puede haber expirado.",
+              "details": {}
+            }
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Customers",
+      "description": "Gestion de clientes de GemaJor Store"
+    }
+  ]
+}
