@@ -1,5 +1,5 @@
-import { Address } from '../../../../domain/entities/Address';
-import { IAddressRepository } from '../../../../domain/repositories/IAddressRepository';
+import { Address } from '@/domain/entities/Address';
+import { IAddressRepository } from '@/domain/repositories/IAddressRepository';
 import { prisma } from '../prisma/prismaClient';
 
 export class PrismaAddressRepository implements IAddressRepository {
@@ -16,30 +16,18 @@ export class PrismaAddressRepository implements IAddressRepository {
         isDefault: address.isDefault
       }
     });
-
-    return Address.fromPersistence(
-      saved.id, saved.customerId, saved.street, saved.city,
-      saved.state, saved.zipCode, saved.country, saved.isDefault
-    );
+    return Address.fromPersistence(saved.id, saved.customerId, saved.street, saved.city, saved.state, saved.zipCode, saved.country, saved.isDefault);
   }
 
   async findByCustomerId(customerId: string): Promise<Address[]> {
-    const found = await prisma.address.findMany({
-      where: { customerId }
-    });
-
-    return found.map(a => Address.fromPersistence(
-      a.id, a.customerId, a.street, a.city, a.state, a.zipCode, a.country, a.isDefault
-    ));
+    const found = await prisma.address.findMany({ where: { customerId } });
+    return found.map(a => Address.fromPersistence(a.id, a.customerId, a.street, a.city, a.state, a.zipCode, a.country, a.isDefault));
   }
 
   async findById(id: string): Promise<Address | null> {
     const found = await prisma.address.findUnique({ where: { id } });
     if (!found) return null;
-    return Address.fromPersistence(
-      found.id, found.customerId, found.street, found.city,
-      found.state, found.zipCode, found.country, found.isDefault
-    );
+    return Address.fromPersistence(found.id, found.customerId, found.street, found.city, found.state, found.zipCode, found.country, found.isDefault);
   }
 
   async delete(id: string): Promise<void> {

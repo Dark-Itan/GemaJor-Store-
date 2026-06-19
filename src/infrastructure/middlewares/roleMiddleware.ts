@@ -1,4 +1,4 @@
-import { ForbiddenError } from '../../../shared/errors/ForbiddenError';
+import { ForbiddenError } from '@/shared/errors/ForbiddenError';
 import { AuthPayload } from './authMiddleware';
 
 export function roleMiddleware(user: AuthPayload, allowedRoles: string[]): void {

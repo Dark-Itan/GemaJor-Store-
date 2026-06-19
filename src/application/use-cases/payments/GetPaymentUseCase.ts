@@ -1,6 +1,6 @@
-import { IPaymentRepository } from '../../../domain/repositories/IPaymentRepository';
-import { NotFoundError } from '../../../shared/errors/NotFoundError';
-import { PaymentResponseDTO } from '../dto/PaymentDTO';
+import { IPaymentRepository } from '@/domain/repositories/IPaymentRepository';
+import { NotFoundError } from '@/shared/errors/NotFoundError';
+import { PaymentResponseDTO } from '@/application/dto/PaymentDTO';
 
 export class GetPaymentUseCase {
   constructor(private readonly paymentRepository: IPaymentRepository) {}

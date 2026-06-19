@@ -1,8 +1,8 @@
-import { Address } from '../../../domain/entities/Address';
-import { IAddressRepository } from '../../../domain/repositories/IAddressRepository';
-import { ICustomerRepository } from '../../../domain/repositories/ICustomerRepository';
-import { CustomerId } from '../../../domain/value-objects/CustomerId';
-import { NotFoundError } from '../../../shared/errors/NotFoundError';
+import { Address } from '@/domain/entities/Address';
+import { IAddressRepository } from '@/domain/repositories/IAddressRepository';
+import { ICustomerRepository } from '@/domain/repositories/ICustomerRepository';
+import { CustomerId } from '@/domain/value-objects/CustomerId';
+import { NotFoundError } from '@/shared/errors/NotFoundError';
 import { CreateAddressDTO, AddressResponseDTO } from '../../dto/AddressDTO';
 
 export class AddAddressUseCase {

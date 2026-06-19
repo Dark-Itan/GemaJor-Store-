@@ -1,5 +1,5 @@
-import { IAddressRepository } from '../../../domain/repositories/IAddressRepository';
-import { AddressResponseDTO } from '../dto/AddressDTO';
+import { IAddressRepository } from '@/domain/repositories/IAddressRepository';
+import { AddressResponseDTO } from '@/application/dto/AddressDTO';
 
 export class ListAddressesUseCase {
   constructor(private readonly addressRepository: IAddressRepository) {}

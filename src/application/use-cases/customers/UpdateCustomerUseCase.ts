@@ -1,7 +1,7 @@
-import { ICustomerRepository } from '../../../domain/repositories/ICustomerRepository';
-import { CustomerId } from '../../../domain/value-objects/CustomerId';
-import { NotFoundError } from '../../../shared/errors/NotFoundError';
-import { UpdateCustomerDTO, CustomerResponseDTO } from '../dto/CustomerDTO';
+import { ICustomerRepository } from '@/domain/repositories/ICustomerRepository';
+import { CustomerId } from '@/domain/value-objects/CustomerId';
+import { NotFoundError } from '@/shared/errors/NotFoundError';
+import { UpdateCustomerDTO, CustomerResponseDTO } from '@/application/dto/CustomerDTO';
 
 export class UpdateCustomerUseCase {
   constructor(private readonly customerRepository: ICustomerRepository) {}

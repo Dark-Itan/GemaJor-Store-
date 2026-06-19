@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server';
-import { DomainError } from '../../../shared/errors/DomainError';
-import { NotFoundError } from '../../../shared/errors/NotFoundError';
-import { ConflictError } from '../../../shared/errors/ConflictError';
-import { ValidationError } from '../../../shared/errors/ValidationError';
-import { UnauthorizedError } from '../../../shared/errors/UnauthorizedError';
-import { ForbiddenError } from '../../../shared/errors/ForbiddenError';
+import { DomainError } from '@/shared/errors/DomainError';
+import { NotFoundError } from '@/shared/errors/NotFoundError';
+import { ConflictError } from '@/shared/errors/ConflictError';
+import { ValidationError } from '@/shared/errors/ValidationError';
+import { UnauthorizedError } from '@/shared/errors/UnauthorizedError';
+import { ForbiddenError } from '@/shared/errors/ForbiddenError';
 
 export class ApiError {
   static handle(error: unknown) {

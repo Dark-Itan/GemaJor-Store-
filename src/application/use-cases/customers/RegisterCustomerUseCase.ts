@@ -1,8 +1,8 @@
-import { Customer } from '../../../domain/entities/Customer';
-import { ICustomerRepository } from '../../../domain/repositories/ICustomerRepository';
-import { Email } from '../../../domain/value-objects/Email';
-import { ConflictError } from '../../../shared/errors/ConflictError';
-import { CreateCustomerDTO, CustomerResponseDTO } from '../dto/CustomerDTO';
+import { Customer } from '@/domain/entities/Customer';
+import { ICustomerRepository } from '@/domain/repositories/ICustomerRepository';
+import { Email } from '@/domain/value-objects/Email';
+import { ConflictError } from '@/shared/errors/ConflictError';
+import { CreateCustomerDTO, CustomerResponseDTO } from '@/application/dto/CustomerDTO';
 import bcrypt from 'bcryptjs';
 
 export class RegisterCustomerUseCase {

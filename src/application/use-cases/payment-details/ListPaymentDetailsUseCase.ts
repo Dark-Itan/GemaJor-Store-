@@ -1,5 +1,5 @@
-import { IPaymentDetailRepository } from '../../../domain/repositories/IPaymentDetailRepository';
-import { PaymentDetailResponseDTO } from '../dto/PaymentDetailDTO';
+import { IPaymentDetailRepository } from '@/domain/repositories/IPaymentDetailRepository';
+import { PaymentDetailResponseDTO } from '@/application/dto/PaymentDetailDTO';
 
 export class ListPaymentDetailsUseCase {
   constructor(private readonly paymentDetailRepository: IPaymentDetailRepository) {}

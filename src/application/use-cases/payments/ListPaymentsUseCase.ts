@@ -1,7 +1,7 @@
-import { IPaymentRepository } from '../../../domain/repositories/IPaymentRepository';
-import { PaymentStatusType } from '../../../domain/value-objects/PaymentStatus';
-import { PaginatedResult } from '../../../shared/types/PaginatedResult';
-import { PaymentResponseDTO } from '../dto/PaymentDTO';
+import { IPaymentRepository } from '@/domain/repositories/IPaymentRepository';
+import { PaymentStatusType } from '@/domain/value-objects/PaymentStatus';
+import { PaginatedResult } from '@/shared/types';
+import { PaymentResponseDTO } from '@/application/dto/PaymentDTO';
 
 export class ListPaymentsUseCase {
   constructor(private readonly paymentRepository: IPaymentRepository) {}

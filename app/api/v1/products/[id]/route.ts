@@ -6,11 +6,10 @@ import { roleMiddleware } from '@/infrastructure/middlewares/roleMiddleware';
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   return errorHandler(async () => {
-    authMiddleware(request);
     const { id } = await params;
-    const payment = await prisma.payment.findUnique({ where: { id } });
-    if (!payment) return NextResponse.json({ code: 'PAYMENT_NOT_FOUND', message: 'Pago no encontrado', details: { id } }, { status: 404 });
-    return NextResponse.json(payment);
+    const product = await prisma.product.findUnique({ where: { id } });
+    if (!product) return NextResponse.json({ code: 'PRODUCT_NOT_FOUND', message: 'Producto no encontrado', details: { id } }, { status: 404 });
+    return NextResponse.json(product);
   });
 }
 
@@ -20,7 +19,17 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
     roleMiddleware(user, ['admin']);
     const { id } = await params;
     const body = await request.json();
-    const payment = await prisma.payment.update({ where: { id }, data: { status: body.status } });
-    return NextResponse.json({ message: 'Estado de pago actualizado exitosamente', payment });
+    const product = await prisma.product.update({ where: { id }, data: body });
+    return NextResponse.json(product);
+  });
+}
+
+export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  return errorHandler(async () => {
+    const user = authMiddleware(request);
+    roleMiddleware(user, ['admin']);
+    const { id } = await params;
+    await prisma.product.delete({ where: { id } });
+    return NextResponse.json({ message: 'Producto eliminado exitosamente' }, { status: 200 });
   });
 }

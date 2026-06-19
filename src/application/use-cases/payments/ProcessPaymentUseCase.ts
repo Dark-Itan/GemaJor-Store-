@@ -1,9 +1,9 @@
-import { Payment } from '../../../domain/entities/Payment';
-import { IPaymentRepository } from '../../../domain/repositories/IPaymentRepository';
-import { ICustomerRepository } from '../../../domain/repositories/ICustomerRepository';
-import { CustomerId } from '../../../domain/value-objects/CustomerId';
-import { NotFoundError } from '../../../shared/errors/NotFoundError';
-import { CreatePaymentDTO, PaymentResponseDTO } from '../dto/PaymentDTO';
+import { Payment } from '@/domain/entities/Payment';
+import { IPaymentRepository } from '@/domain/repositories/IPaymentRepository';
+import { ICustomerRepository } from '@/domain/repositories/ICustomerRepository';
+import { CustomerId } from '@/domain/value-objects/CustomerId';
+import { NotFoundError } from '@/shared/errors/NotFoundError';
+import { CreatePaymentDTO, PaymentResponseDTO } from '@/application/dto/PaymentDTO';
 
 export class ProcessPaymentUseCase {
   constructor(

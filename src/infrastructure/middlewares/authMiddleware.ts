@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { UnauthorizedError } from '../../../shared/errors/UnauthorizedError';
+import { UnauthorizedError } from '@/shared/errors/UnauthorizedError';
 import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'gemajor-secret-key';

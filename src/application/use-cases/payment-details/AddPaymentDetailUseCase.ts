@@ -1,9 +1,9 @@
-import { PaymentDetail } from '../../../domain/entities/PaymentDetail';
-import { IPaymentDetailRepository } from '../../../domain/repositories/IPaymentDetailRepository';
-import { IPaymentRepository } from '../../../domain/repositories/IPaymentRepository';
-import { NotFoundError } from '../../../shared/errors/NotFoundError';
-import { ConflictError } from '../../../shared/errors/ConflictError';
-import { CreatePaymentDetailDTO, PaymentDetailResponseDTO } from '../dto/PaymentDetailDTO';
+import { PaymentDetail } from '@/domain/entities/PaymentDetail';
+import { IPaymentDetailRepository } from '@/domain/repositories/IPaymentDetailRepository';
+import { IPaymentRepository } from '@/domain/repositories/IPaymentRepository';
+import { NotFoundError } from '@/shared/errors/NotFoundError';
+import { ConflictError } from '@/shared/errors/ConflictError';
+import { CreatePaymentDetailDTO, PaymentDetailResponseDTO } from '@/application/dto/PaymentDetailDTO';
 
 export class AddPaymentDetailUseCase {
   constructor(

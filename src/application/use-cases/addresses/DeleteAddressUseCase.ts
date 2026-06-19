@@ -1,6 +1,6 @@
-import { IAddressRepository } from '../../../domain/repositories/IAddressRepository';
-import { NotFoundError } from '../../../shared/errors/NotFoundError';
-import { ConflictError } from '../../../shared/errors/ConflictError';
+import { IAddressRepository } from '@/domain/repositories/IAddressRepository';
+import { NotFoundError } from '@/shared/errors/NotFoundError';
+import { ConflictError } from '@/shared/errors/ConflictError';
 
 export class DeleteAddressUseCase {
   constructor(private readonly addressRepository: IAddressRepository) {}

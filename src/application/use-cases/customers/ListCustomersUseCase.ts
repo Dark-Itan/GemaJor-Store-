@@ -1,6 +1,6 @@
-import { ICustomerRepository } from '../../../domain/repositories/ICustomerRepository';
-import { CustomerResponseDTO } from '../dto/CustomerDTO';
-import { PaginatedResult } from '../../../shared/types/PaginatedResult';
+import { ICustomerRepository } from '@/domain/repositories/ICustomerRepository';
+import { CustomerResponseDTO } from '@/application/dto/CustomerDTO';
+import { PaginatedResult } from '@/shared/types';
 
 export class ListCustomersUseCase {
   constructor(private readonly customerRepository: ICustomerRepository) {}

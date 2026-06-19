@@ -1,7 +1,7 @@
-import { IPaymentRepository } from '../../../domain/repositories/IPaymentRepository';
-import { NotFoundError } from '../../../shared/errors/NotFoundError';
-import { UpdatePaymentDTO, PaymentResponseDTO } from '../dto/PaymentDTO';
-import { PaymentStatusType } from '../../../domain/value-objects/PaymentStatus';
+import { IPaymentRepository } from '@/domain/repositories/IPaymentRepository';
+import { NotFoundError } from '@/shared/errors/NotFoundError';
+import { UpdatePaymentDTO, PaymentResponseDTO } from '@/application/dto/PaymentDTO';
+import { PaymentStatusType } from '@/domain/value-objects/PaymentStatus';
 
 export class UpdatePaymentUseCase {
   constructor(private readonly paymentRepository: IPaymentRepository) {}
