@@ -17,7 +17,7 @@ export default function LoginPage() {
     e.preventDefault();
 
     // Login de Admin
-    if (form.email === 'admin@test.com' && form.password === 'admin123') {
+    if (form.email === process.env.NEXT_PUBLIC_ADMIN_EMAIL && form.password === process.env.NEXT_PUBLIC_ADMIN_PASSWORD) {
       const { ok, data } = await api('POST', '/auth/login', {
         userId: 'admin-123',
         role: 'admin',
@@ -31,25 +31,19 @@ export default function LoginPage() {
     }
 
     // Login de Cliente
-    const custRes = await api('GET', `/customers?search=${form.email}`);
-    const customer = custRes.data?.data?.[0];
-
-    if (!customer) {
-      setToast({ msg: 'Cliente no encontrado. Verifica tu email o regístrate.', type: 'error' });
-      return;
-    }
-
-    const { ok, data } = await api('POST', '/auth/login', {
-      userId: customer.id,
-      role: 'customer',
+    const res = await fetch('http://localhost:3000/api/v1/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: form.email, password: form.password }),
     });
+    const data = await res.json();
 
-    if (ok && data?.token) {
+    if (data && data.token) {
       setToken(data.token, 'customer');
-      setToast({ msg: 'Inicio de sesión exitoso', type: 'success' });
+      setToast({ msg: `Bienvenido/a ${data.firstName || ''}`, type: 'success' });
       setTimeout(() => router.push('/dashboard'), 1000);
     } else {
-      setToast({ msg: 'Error al iniciar sesión', type: 'error' });
+      setToast({ msg: data.message || 'Error al iniciar sesión', type: 'error' });
     }
   };
 
@@ -60,34 +54,14 @@ export default function LoginPage() {
         <h1 className="text-2xl font-black text-indigo-900 mb-1">Iniciar Sesión</h1>
         <p className="text-sm text-gray-400 mb-6">Accede a tu cuenta en GemaJor Store</p>
         <form onSubmit={handleSubmit} className="space-y-3">
-          <input
-            className="w-full border p-2.5 rounded-lg text-sm text-black"
-            placeholder="Email"
-            type="email"
-            required
-            value={form.email}
-            onChange={(e) => setForm({ ...form, email: e.target.value })}
-          />
+          <input className="w-full border p-2.5 rounded-lg text-sm text-black" placeholder="Email" type="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
           <div className="relative">
-            <input
-              className="w-full border p-2.5 rounded-lg text-sm text-black pr-10"
-              placeholder="Contraseña"
-              type={showPassword ? 'text' : 'password'}
-              required
-              value={form.password}
-              onChange={(e) => setForm({ ...form, password: e.target.value })}
-            />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-            >
+            <input className="w-full border p-2.5 rounded-lg text-sm text-black pr-10" placeholder="Contraseña" type={showPassword ? 'text' : 'password'} required value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} />
+            <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
               {showPassword ? '🙈' : '🐵'}
             </button>
           </div>
-          <button type="submit" className="w-full bg-indigo-600 text-white py-2.5 rounded-lg font-bold hover:bg-indigo-700 transition-colors">
-            Ingresar
-          </button>
+          <button type="submit" className="w-full bg-indigo-600 text-white py-2.5 rounded-lg font-bold hover:bg-indigo-700 transition-colors">Ingresar</button>
         </form>
         <p className="text-xs text-gray-400 mt-4 text-center">
           ¿No tienes cuenta? <Link href="/register" className="text-indigo-600 font-medium">Regístrate</Link>

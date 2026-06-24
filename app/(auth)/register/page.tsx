@@ -9,6 +9,7 @@ import Link from 'next/link';
 export default function RegisterPage() {
   const router = useRouter();
   const [form, setForm] = useState({ firstName: '', lastName: '', email: '', password: '', phone: '' });
+  const [showPassword, setShowPassword] = useState(false);
   const [toast, setToast] = useState<{ msg: string; type: 'success' | 'error' } | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -33,7 +34,12 @@ export default function RegisterPage() {
           <input className="w-full border p-2.5 rounded-lg text-sm text-black" placeholder="Apellido" required value={form.lastName} onChange={(e) => setForm({ ...form, lastName: e.target.value })} />
           <input className="w-full border p-2.5 rounded-lg text-sm text-black" placeholder="Email" type="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
           <input className="w-full border p-2.5 rounded-lg text-sm text-black" placeholder="Teléfono (opcional)" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} />
-          <input className="w-full border p-2.5 rounded-lg text-sm text-black" placeholder="Contraseña" type="password" required value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} />
+          <div className="relative">
+            <input className="w-full border p-2.5 rounded-lg text-sm text-black pr-10" placeholder="Contraseña" type={showPassword ? 'text' : 'password'} required value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} />
+            <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+              {showPassword ? '🙈' : '🐵'}
+            </button>
+          </div>
           <button type="submit" className="w-full bg-emerald-600 text-white py-2.5 rounded-lg font-bold hover:bg-emerald-700 transition-colors">Crear Cuenta</button>
         </form>
         <p className="text-xs text-gray-400 mt-4 text-center">
